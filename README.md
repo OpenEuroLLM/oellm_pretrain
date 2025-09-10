@@ -39,3 +39,9 @@ sweep_args: [lr]
 oellm-pretrain config/example.yaml
 ```
 This creates sweep.json, an sbatch script, and submits the job array to SLURM.
+This will:
+- Generate a `sweep.json` file with one entry per sweep point.
+- Render and write an sbatch script from the template.
+- Submit a SLURM job array, one task per sweep config.
+- Create output directories under out_dir/ for logs and checkpoints.
+
