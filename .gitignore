@@ -1,2 +1,8 @@
+# Ruff cache
 .ruff_cache/
-oellm_pretrain.egg-info/
+
+# Build artifacts
+*.egg-info/
+*.pyc
+__pycache__/
+oellm_pretrain/__pycache__/
