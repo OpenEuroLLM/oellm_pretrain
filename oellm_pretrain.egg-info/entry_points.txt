@@ -1,2 +1,0 @@
-[console_scripts]
-oellm-pretrain = oellm_pretrain.main:main
