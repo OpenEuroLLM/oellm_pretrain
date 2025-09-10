@@ -38,7 +38,6 @@ sweep_args: [lr]
 ```bash
 oellm-pretrain config/example.yaml
 ```
-This creates sweep.json, an sbatch script, and submits the job array to SLURM.
 This will:
 - Generate a `sweep.json` file with one entry per sweep point.
 - Render and write an sbatch script from the template.
