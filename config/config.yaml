@@ -4,13 +4,13 @@
 ## Sections:
 ## - `sbatch_args`: Slurm setup (not passed to Megatron).
 ## - `sweep_args`: Keys to sweep over (grid search).
-## - `megatron_args`: Mapped to `pretrain_gpt.py` CLI flags.
+## - `megatron_args`: Mapped verbatim to `pretrain_gpt.py` CLI flags.
 ##
 ## Mapping rules for `megatron_args`:
 ##   - `arg_name: val` -> `--arg-name val`
-##   - `bool: true`   -> `--arg-name`
+##   - `bool_arg: true`   -> `--bool-arg`
 ##   - `bool: false`  -> omitted
-##   - `list: [a, b]` -> `--arg-name a b`
+##   - `list_arg: [a, b]` -> `--list-arg a b`
 ##
 ## Example:
 ##   megatron_args:
