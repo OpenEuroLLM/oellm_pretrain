@@ -54,9 +54,10 @@ CONTAINER="/scratch/project_462000963/containers/lumi-pytorch-rocm-6.2.4-python-
 
 git clone https://github.com/OpenEuroLLM/oellm_pretrain.git
 cd oellm_pretrain
+git switch dev_lumi
 
 #TODO: Check this actually works 
-singularity exec $CONTAINER -B $PWD bash -c "python3 -m venv venv --system-site-packages; pip install -e .[dev]"
+singularity exec -B $PWD $CONTAINER bash -c "python3 -m venv venv --system-site-packages; source venv/bin/activate; pip install -e .[dev]"
 ```
 
 ## Usage
@@ -78,7 +79,7 @@ sweep_args: [lr]
 
 2. Launch:
 ```bash
-python3 oellm-pretrain/main.py config/config_lumi_example.yaml
+python3 oellm_pretrain/main.py config/example_config_lumi.yaml
 ```
 This will:
 - Generate a `sweep.json` file with one entry per sweep point.
