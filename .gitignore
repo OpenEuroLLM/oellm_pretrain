@@ -6,3 +6,4 @@
 *.pyc
 __pycache__/
 oellm_pretrain/__pycache__/
+.venv/

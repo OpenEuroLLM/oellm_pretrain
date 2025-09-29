@@ -161,8 +161,9 @@ def main():
 
     # Render sbatch script from template, and write
     pkg_dir = os.path.dirname(__file__)
-    template_path = os.path.join(pkg_dir, "template.sbatch")
-    cluster_setup_path = os.path.join(pkg_dir, "setup_leonardo.sh")
+    #TODO: Make these cli arguments
+    template_path = os.path.join(pkg_dir, "template_lumi.sbatch")
+    cluster_setup_path = os.path.join(pkg_dir, "setup_lumi.sh")
     with open(template_path) as f:
         sbatch_script = Template(f.read())
     sbatch_script = sbatch_script.safe_substitute(
