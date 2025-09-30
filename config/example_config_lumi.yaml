@@ -29,8 +29,12 @@
 sbatch_args:
 
     # Path to slurm logs and scrpts, and to checkpoints
-    out_dir: "/scratch/project_462000963/users/villekom/"
-
+    out_dir: "/scratch/project_462000963/users/rluukkon/git/oellm_pretrain/"
+    nodes: 4
+    time: 00:10:00 # format: DD-HH:MM:SS
+    account: project_462000963
+    partition: dev-g
+    
     # Job name
     job_name: "oellm_test"
 
@@ -44,7 +48,7 @@ sweep_args: ['lr']
 
 megatron_args:
 
-    lr: [0.0003, 0.0001]
+    lr: [0.0003]
 
     # WANDB NAME, also used as JOB_NAME
     wandb_exp_name: oellm_test
@@ -63,26 +67,28 @@ megatron_args:
     ## Specify one of these only!
     # lr_decay_iters: null
     # lr_decay_samples: null
-    lr_decay_fraction: 0.2
+    lr_decay_fraction: 0.2 
+    
+    #DATA
+    # data_path: [
+        # /scratch/project_462000353/data/processed-llama31/merged/fi-culturax
+    # ]
+    mock_data: True
 
-    # DATA
-    data_path: [
-      /scratch/project_462000963/users/villekom/frameworks/Megatron-LM/reproducible/redpajama-text_document  
-    ]
     seq_length: 2048
     max_position_embeddings: 2048
     micro_batch_size: 2
     global_batch_size: 1024
-    vocab_file: "/scratch/project_462000963/users/villekom/frameworks/Megatron-LM/reproducible/vocab.json"
-    merge_file: "/scratch/project_462000963/users/villekom/frameworks/Megatron-LM/reproducible/merges.txt"
+    tokenizer_type: HuggingFaceTokenizer
+    tokenizer_model: "meta-llama/Llama-3.1-8B"
     num_workers: 5
     split: '99,1,0'
 
     # MODEL
-    num_layers: 22
-    hidden_size: 512
-    ffn_hidden_size: 2256
-    num_attention_heads: 8
+    num_layers: 32
+    hidden_size: 4096
+    ffn_hidden_size: 8192
+    num_attention_heads: 32
     init_method_std: 0.02
     position_embedding_type: "rope"
     rotary_base: 10000
@@ -96,7 +102,7 @@ megatron_args:
     qk_layernorm: False # potentially enable qk-norm
     bf16: True
     swiglu: True
-    untie_embeddings_and_output_weights: False
+    untie_embeddings_and_output_weights: True
     use_flash_attn: True
     attention_softmax_in_fp32: False
     disable_bias_linear: True
@@ -115,7 +121,7 @@ megatron_args:
     # TRAINING, PARALLELISM
     recompute_activations: False
     use_torch_fsdp2: False # it's either this or the next 4 args
-    tensor_model_parallel_size: 1
+    tensor_model_parallel_size: 2
     pipeline_model_parallel_size: 1
     context_parallel_size: 1
     sequence_parallel: True

@@ -135,6 +135,7 @@ def main():
     megatron_args = cfg["megatron_args"]
     sweep_args = cfg.pop("sweep_args", [])  # by default no sweeps (empty list)
 
+
     # Dirs
     out_dir = sbatch_args["out_dir"]
     slurm_logs_dir = os.path.join(out_dir, "slurm_logs")
@@ -170,8 +171,12 @@ def main():
         out_dir=out_dir,
         sweep_path=sweep_path,
         slurm_logs_dir=slurm_logs_dir,
-        job_name=sbatch_args["job_name"],
         cluster_setup_script=cluster_setup_path,
+        job_name=sbatch_args["job_name"],
+        slurm_time=sbatch_args['time'],
+        slurm_account=sbatch_args['account'],
+        slurm_nodes=sbatch_args['nodes'],
+        slurm_partition=sbatch_args['partition']
     )
     sbatch_script_path = os.path.join(
         slurm_scripts_dir, f"{sbatch_args['job_name']}.sbatch"

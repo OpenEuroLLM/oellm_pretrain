@@ -8,7 +8,11 @@ PROJECT_DIR="/scratch/project_462000963/"
 PROJECT_FAST_DIR="/flash/project_462000963"
 
 # Path to Megatron-LM repo
-MEGATRON_PATH="/scratch/project_462000963/users/villekom/frameworks/Megatron-LM"
+MEGATRON_PATH="/pfs/lustrep4/scratch/project_462000963/users/rluukkon/git/oellm_pretrain/Megatron-LM"
+
+ 
+export CC=gcc-12
+export CXX=g++-12
 
 # MEGATRON CACHE
 MEGATRON_CACHE_BASE=$PROJECT_FAST_DIR
@@ -66,6 +70,8 @@ export FI_CXI_RX_MATCH_MODE=software                   #Address matching can be 
 export FI_CXI_RDZV_PROTO=alt_read
 export FI_MR_CACHE_MONITOR=userfaultfd
 export FI_CXI_DEFAULT_CQ_SIZE=131072
+export NCCL_NCHANNELS_PER_PEER=16
+export NCCL_MIN_CHANNELS=${NCCL_NCHANNELS_PER_PEER}
 
 #NCCL/RCCL
 export NCCL_DMABUF_ENABLE=1                             #Enable DMA buffers from the RCCL side

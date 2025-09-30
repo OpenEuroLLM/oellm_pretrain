@@ -1,12 +1,12 @@
 #!/bin/bash
 
-#SBATCH --time=00:15:00
-#SBATCH --nodes=2
+#SBATCH --time=$slurm_time
+#SBATCH --nodes=$slurm_nodes
+#SBATCH --account=$slurm_account
+#SBATCH --partition=$slurm_partition
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=56
 #SBATCH --gpus-per-node=8
-#SBATCH --account=project_462000963
-#SBATCH --partition=dev-g
 #SBATCH --threads-per-core=1
 #SBATCH --output=$slurm_logs_dir/%x-%A-%a.out
 #SBATCH --error=$slurm_logs_dir/%x-%A-%a.err
