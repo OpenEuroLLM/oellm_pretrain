@@ -25,7 +25,8 @@ mkdir -p "$MEGATRON_CACHE"
 
 # Directories to map into the container
 BIND_DIRS="${PROJECT_DIR},${PROJECT_FAST_DIR},${MEGATRON_PATH},${MEGATRON_CACHE_FOLDER}"
-BIND_DIRS=$BIND_DIRS:/boot/config-5.14.21-150500.55.49_13.0.56-cray_shasta_c,/opt/cray,/var/spool/slurmd,/scratch/project_462000394/containers/for-turkunlp-team/tuner-2025-07-09/
+LUMI_FS_BINDS=
+BIND_DIRS=$BIND_DIRS:/boot/config-5.14.21-150500.55.49_13.0.56-cray_shasta_c,/opt/cray,/var/spool/slurmd,/scratch/project_462000394/containers/for-turkunlp-team/tuner-2025-07-09/,/pfs,/scratch,/projappl,/project,/flash,/appl
 
 ######################################################################
 # ENV VARS and SETTING
