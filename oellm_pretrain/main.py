@@ -17,6 +17,7 @@ import json
 import os
 import subprocess
 import sys
+import re
 from itertools import product
 from string import Template
 from typing import List
@@ -26,6 +27,24 @@ import yaml
 
 def divide_rounding_up(a: int, b: int) -> int:
     return (a + b - 1) // b
+
+# Check whether an argument is a valid command-line argument for Megatron-LM
+def validate_megatron_args(cfg):
+    regex = re.compile(r"\s+group\.add_argument\('--([^']+)'")
+    megatron_argfile = os.path.join(os.environ['MEGATRON_PATH'], "megatron/training/arguments.py")
+    megatron_args = []
+    with open(megatron_argfile, 'r') as f:
+        megatron_args = f.readlines()
+        for line in megatron_args:
+            match = regex.match(line)
+            if match:
+                arg = match.groups()[0]
+                arg = arg.replace("-", "_")
+                megatron_args.append(arg)
+    
+    unknown_keys = set(cfg.keys()).difference(megatron_args)
+    assert len(unknown_keys)==0, f"Non-matching Megatron-arguments in the .yaml-file: {unknown_keys}"
+    
 
 
 def maybe_add_derived_configs(cfg):
@@ -135,7 +154,6 @@ def main():
     megatron_args = cfg["megatron_args"]
     sweep_args = cfg.pop("sweep_args", [])  # by default no sweeps (empty list)
 
-
     # Dirs
     out_dir = sbatch_args["out_dir"]
     slurm_logs_dir = os.path.join(out_dir, "slurm_logs")
@@ -147,7 +165,7 @@ def main():
 
     # Add derived configs
     megatron_args = maybe_add_derived_configs(megatron_args)
-
+    validate_megatron_args(megatron_args)
     # Generate all configs
     args_list = cartesian_product(megatron_args, sweep_args)
 
