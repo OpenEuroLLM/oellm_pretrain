@@ -187,6 +187,8 @@ def main():
         sbatch_script = Template(f.read())
     sbatch_script = sbatch_script.safe_substitute(
         out_dir=out_dir,
+        load = megatron_args.get("load"),
+        save = megatron_args.get("save"), # separate save directory from 
         sweep_path=sweep_path,
         slurm_logs_dir=slurm_logs_dir,
         cluster_setup_script=cluster_setup_path,

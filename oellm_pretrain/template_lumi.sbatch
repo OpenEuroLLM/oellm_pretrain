@@ -5,6 +5,8 @@
 #SBATCH --account=$slurm_account
 #SBATCH --partition=$slurm_partition
 #SBATCH --ntasks-per-node=1
+#SBATCH --mem=0G
+#SBATCH --exclusive
 #SBATCH --cpus-per-task=56
 #SBATCH --gpus-per-node=8
 #SBATCH --threads-per-core=1
@@ -60,20 +62,30 @@ ROW=$(jq -c ".[$SLURM_ARRAY_TASK_ID]" "$sweep_path")
 JOBNAME=$(jq -r '.job_name' <<<"$ROW")
 mapfile -t ARGS < <(jq -r '.flags[]' <<<"$ROW")
 
+
 # OUTPUT_DIR
-CHECKPOINT_PATH="$out_dir/checkpoints/$JOBNAME"
-TENSORBOARD_DIR="${CHECKPOINT_PATH}/tensorboard"
-WANDB_DIR="${CHECKPOINT_PATH}/wandb"
-mkdir -p "$out_dir" "$CHECKPOINT_PATH" "$TENSORBOARD_DIR" "$WANDB_DIR"
+if [[ -n "$load" ]]; then
+    CHECKPOINT_LOAD_PATH="${load}"
+else
+    CHECKPOINT_LOAD_PATH="${$out_dir/checkpoints/$JOBNAME}"
+fi
+if [[ -n "$save" ]]; then
+    CHECKPOINT_SAVE_PATH="${save}"
+else
+    CHECKPOINT_SAVE_PATH="${$out_dir/checkpoints/$JOBNAME}"
+fi
+
+TENSORBOARD_DIR="${CHECKPOINT_SAVE_PATH}/tensorboard"
+WANDB_DIR="${CHECKPOINT_SAVE_PATH}/wandb"
+mkdir -p "$out_dir" "$CHECKPOINT_SAVE_PATH" "$TENSORBOARD_DIR" "$WANDB_DIR"
 
 ######################################################################
 # PARSE ARGS FROM YAML CONFIG
 ######################################################################
-
 # Append args depending on path
 ARGS+=(
-    --load "${CHECKPOINT_PATH}"
-    --save "${CHECKPOINT_PATH}"
+    --load "${CHECKPOINT_LOAD_PATH}"
+    --save "${CHECKPOINT_SAVE_PATH}"
     --tensorboard-dir "${TENSORBOARD_DIR}"
     --wandb-save-dir "${WANDB_DIR}"
     --data-cache-path "${MEGATRON_CACHE}"
